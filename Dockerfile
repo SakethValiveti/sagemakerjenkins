@@ -9,7 +9,7 @@ MAINTAINER Amazon AI <sage-learner@amazon.com>
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
          wget \
-         python3 \
+         python3.8 \
          nginx \
          ca-certificates \
     && rm -rf /var/lib/apt/lists/*
