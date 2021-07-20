@@ -9,7 +9,7 @@ MAINTAINER Amazon AI <sage-learner@amazon.com>
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
          wget \
-         python3.8 \
+         python3.6 \
          nginx \
          ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -21,7 +21,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
 # image, which reduces start up time.
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && \
     pip3 install numpy scipy scikit-learn pandas flask gevent gunicorn && \
-        (cd /usr/local/lib/python3.*/dist-packages/scipy/.libs; rm *; ln ../../numpy/.libs/* .) && \
+        (cd /usr/local/lib/python3.6/dist-packages/scipy/.libs; rm *; ln ../../numpy/.libs/* .) && \
         rm -rf /root/.cache
 
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
