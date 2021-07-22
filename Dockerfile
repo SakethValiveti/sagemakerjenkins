@@ -7,7 +7,7 @@ FROM amazonlinux:latest
 MAINTAINER Amazon AI <sage-learner@amazon.com>
 
 
-RUN yum -y update && yum install -y --no-install-recommends \
+RUN yum -y update && yum install -y \
          wget \
          python3.6 \
          nginx \
