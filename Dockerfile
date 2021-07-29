@@ -2,26 +2,19 @@
 # This is a Python 2 image that uses the nginx, gunicorn, flask stack
 # for serving inferences in a stable way.
 
-FROM amazonlinux:latest
+FROM ubuntu:18.04
+ENV PATH="/root/miniconda3/bin:${PATH}"
+ARG PATH="/root/miniconda3/bin:${PATH}"
+RUN apt-get update
 
-MAINTAINER Amazon AI <sage-learner@amazon.com>
+RUN apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 
-
-RUN yum -y update && yum install -y \
-         wget \
-         python3 \
-         nginx \
-         ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-# Here we get all python packages.
-# There's substantial overlap between scipy and numpy that we eliminate by
-# linking them together. Likewise, pip leaves the install caches populated which uses
-# a significant amount of space. These optimizations save a fair amount of space in the
-# image, which reduces start up time.
-RUN wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py && \
-    pip install numpy scipy scikit-learn pandas matplotlib flask gevent gunicorn \
-    pip install --upgrade pandas
+RUN wget \
+    https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && mkdir /root/.conda \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b \
+    && rm -f Miniconda3-latest-Linux-x86_64.sh 
+RUN conda install pandas matplotlib
 
 # Set some environment variables. PYTHONUNBUFFERED keeps Python from buffering our standard
 # output stream, which means that logs can be delivered to the user quickly. PYTHONDONTWRITEBYTECODE
